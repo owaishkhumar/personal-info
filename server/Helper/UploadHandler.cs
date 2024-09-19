@@ -20,7 +20,7 @@
             }
 
             //nameof changing
-            string fileName = Path.GetFileName(file.Name) + Guid.NewGuid().ToString() + extension;
+            string fileName = Path.GetFileName(file.FileName) + Guid.NewGuid().ToString() + extension;
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Images\\");
             Console.WriteLine(path);
             using FileStream stream = new FileStream(path + fileName, FileMode.Create);

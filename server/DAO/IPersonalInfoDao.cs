@@ -6,6 +6,12 @@ namespace PersonalInfo.DAO
     {
         Task<List<PersonalInformationData>> GetAllPersonalInfo(string baseUri);
         Task<int> InsertPersonalDetails(InsertPersonalDetails personalInfo, string imageName);
+        Task<string> DeletePersonalDetails(int id);
+
+        Task<PersonalInformationData> GetPersonalInfoById(int id, string baseUri);
+        Task<InsertPersonalDetails> UpdatePersonalInfo(int id);
+
+
 
 
     }

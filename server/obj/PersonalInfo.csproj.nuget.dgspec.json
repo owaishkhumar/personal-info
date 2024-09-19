@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\PersonalInfo\\PersonalInfo.csproj": {}
+    "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\server\\PersonalInfo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\PersonalInfo\\PersonalInfo.csproj": {
+    "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\server\\PersonalInfo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\PersonalInfo\\PersonalInfo.csproj",
+        "projectUniqueName": "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\server\\PersonalInfo.csproj",
         "projectName": "PersonalInfo",
-        "projectPath": "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\PersonalInfo\\PersonalInfo.csproj",
+        "projectPath": "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\server\\PersonalInfo.csproj",
         "packagesPath": "C:\\Users\\mohammed.owaish\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\PersonalInfo\\obj\\",
+        "outputPath": "C:\\Users\\mohammed.owaish\\Documents\\Assignment\\Personal-Info\\server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
