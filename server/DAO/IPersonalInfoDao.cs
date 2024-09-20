@@ -9,7 +9,7 @@ namespace PersonalInfo.DAO
         Task<string> DeletePersonalDetails(int id);
 
         Task<PersonalInformationData> GetPersonalInfoById(int id, string baseUri);
-        Task<InsertPersonalDetails> UpdatePersonalInfo(int id);
+        Task<int> UpdatePersonalInfo(InsertPersonalDetails personalInfo, int id, string imageName);
 
 
 

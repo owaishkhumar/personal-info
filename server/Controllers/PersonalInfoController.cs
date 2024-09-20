@@ -17,7 +17,6 @@ namespace PersonalInfo.Controllers
         }
 
 
-        // GET: PersonalInfoController
         [HttpGet]
         public async Task<ActionResult<List<PersonalInformationData>>> Index()
         {
@@ -47,7 +46,7 @@ namespace PersonalInfo.Controllers
         {
             if (personal != null)
             {
-                string imageName = new UploadHandler().Upload(personal.ImageFile);
+                string imageName = UploadHandler.Upload(personal.ImageFile);
                 Console.Write(imageName);
                 int res = await _personalInfoDao.InsertPersonalDetails(personal, imageName);
                 if (res > 0)
@@ -70,7 +69,7 @@ namespace PersonalInfo.Controllers
                 string imageUrl = await _personalInfoDao.DeletePersonalDetails(id);
                 if (imageUrl != null)
                 {
-                    return Ok(imageUrl);
+                    return Ok("Deleted Successfully");
                 }
                 else
                 {
@@ -80,6 +79,32 @@ namespace PersonalInfo.Controllers
             else
             {
                 return BadRequest("Id is not valid");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<string>> UpdatedPeronalDetails([FromForm] InsertPersonalDetails personal, int id)
+        {
+            if (personal != null)
+            {
+                var baseUri = $"{Request.Scheme}://{Request.Host}/";
+                PersonalInformationData personalInfoById = await _personalInfoDao.GetPersonalInfoById(id, baseUri);
+
+                string imageUrl = personalInfoById.ImageUrl.Substring(36);
+
+                UploadHandler.DeleteImage(imageUrl);
+
+                string imageName = UploadHandler.Upload(personal.ImageFile);
+                int res = await _personalInfoDao.UpdatePersonalInfo(personal, id, imageName);
+                if (res > 0)
+                {
+                    return Ok("Updated Successfully");
+                }
+                return BadRequest("Failed to add player");
+            }
+            else
+            {
+                return BadRequest();
             }
         }
     }

@@ -2,6 +2,8 @@
 using System.Data.Common;
 using System.Data;
 using PersonalInfo.Model;
+using PersonalInfo.Helper;
+using System.Net.NetworkInformation;
 
 namespace PersonalInfo.DAO
 {
@@ -92,15 +94,13 @@ namespace PersonalInfo.DAO
             PersonalInformationData? personalInfo = null;
             try
             {
-                using (_connection)
-                {
-                    await _connection.OpenAsync();
-                    NpgsqlCommand command = new NpgsqlCommand(query, _connection);
-                    command.CommandType = CommandType.Text;
-                    NpgsqlDataReader reader = await command.ExecuteReaderAsync();
+                using var command = _connection.CreateCommand();
+                command.CommandText = query;
+                await _connection.OpenAsync();
+                using var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             personalInfo = new PersonalInformationData();
                             personalInfo.Id = Convert.ToInt32(reader["id"]);
@@ -120,8 +120,9 @@ namespace PersonalInfo.DAO
                         }
                     }
                     reader.Close();
+                    await _connection.CloseAsync();
                     return personalInfo;    
-                }
+                
             }
             catch (NpgsqlException e)
             {
@@ -129,8 +130,7 @@ namespace PersonalInfo.DAO
             }
             return personalInfo;
         }
-
-
+            
         public async Task<string> DeletePersonalDetails(int id)
         {
             int rowDeleted = 0;
@@ -158,15 +158,9 @@ namespace PersonalInfo.DAO
 
                     imageUrl = imageUrl.Substring(14);
 
-                    if (File.Exists(Path.Combine($"{Directory.GetCurrentDirectory()}\\Images", imageUrl)))
-                    {
-                        File.Delete(Path.Combine($"{Directory.GetCurrentDirectory()}\\Images", imageUrl));
-                        Console.WriteLine("File deleted.");
-                    }
-                    else Console.WriteLine("File not found");
+                    UploadHandler.DeleteImage(imageUrl);
 
                     reader.Close();
-
                     return imageUrl;
                 }
             }
@@ -177,9 +171,32 @@ namespace PersonalInfo.DAO
             return imageUrl;
         }
 
-        public Task<InsertPersonalDetails> UpdatePersonalInfo(int id)
+        public async Task<int> UpdatePersonalInfo(InsertPersonalDetails personalInfo, int id, string imageName)
         {
-            throw new NotImplementedException();
+            int rowUpdated = 0;
+            string message;
+            string updateQuery = $"UPDATE personal_info.userdata set name = '{personalInfo.Name}', date_of_birth = '{personalInfo.DateOfBirth}', residential_address = '{personalInfo.ResidentialAddress}', permanent_address = '{personalInfo.PermanentAddress}', phone_number = '{personalInfo.MobileNumber}', email_address = '{personalInfo.EmailAddress}', marital_status = '{personalInfo.MaritalStatus}', gender = '{personalInfo.Gender}', occupation = '{personalInfo.Occupation}', aadhar_card_number = '{personalInfo.AadharCardNumber}', pan_number = '{personalInfo.PANNumber}', image = 'static/images/{imageName}' where id = {id};";
+            try
+            {
+                using (_connection)
+                {
+                    await _connection.OpenAsync();
+                    NpgsqlCommand updateCommand = new NpgsqlCommand(updateQuery, _connection);
+                    updateCommand.CommandType = CommandType.Text;
+                    rowUpdated = await updateCommand.ExecuteNonQueryAsync();
+                }
+            }
+            catch (NpgsqlException e)
+            {
+                message = e.Message;
+                Console.WriteLine("---------NpsqlExpection Exception Update Personal--------------\n" + message);
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+                Console.WriteLine("---------Exception Update Personal--------------\n" + message);
+            }
+            return rowUpdated;
         }
     }
 }

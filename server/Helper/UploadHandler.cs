@@ -1,11 +1,11 @@
 ﻿namespace PersonalInfo.Helper
 {
-    public class UploadHandler
+    public static class UploadHandler
     {
-        public string Upload(IFormFile file)
+        public static string Upload(IFormFile file)
         {
             //extension 
-            List<string> validExtensions = new List<string>() { ".jpg", ".png", ".jpeg"};
+            List<string> validExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
             string extension = Path.GetExtension(file.FileName);
             if (!validExtensions.Contains(extension))
             {
@@ -28,5 +28,13 @@
             return fileName;
         }
 
+        public static void DeleteImage(string imageUrl)
+        {
+            Console.WriteLine(imageUrl);
+            if (File.Exists(Path.Combine($"{Directory.GetCurrentDirectory()}\\Images", imageUrl)))
+            {
+                File.Delete(Path.Combine($"{Directory.GetCurrentDirectory()}\\Images", imageUrl));
+            }
+        }
     }
 }
