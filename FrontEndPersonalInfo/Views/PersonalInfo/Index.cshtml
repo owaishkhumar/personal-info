@@ -1,0 +1,26 @@
+﻿@model IEnumerable<FrontEndPersonalInfo.Models.PersonalInfoViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p class="text-center"> 
+    <button class="btn btn-outline-success"><a class="text-decoration-none text-black " asp-action="adddetails">Create New User</a></button>
+</p>
+
+<div class="d-flex flex-lg-wrap justify-content-center">
+    @foreach (var item in Model)
+    {
+        <div class="card m-3" style="width: 18rem;">
+            <img src="@Url.Content(item.ImageUrl)" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title text-center border-bottom p-1">@Html.DisplayFor(modelItem => item.Name)</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.EmailAddress)</li>
+                    <li class="list-group-item">@Html.DisplayFor(modelItem => item.MobileNumber)</li>
+                </ul>
+            <a asp-action="personaldetials" class="btn btn-primary m-2">View More</a>
+          </div>
+        </div>
+    }
+</div>
